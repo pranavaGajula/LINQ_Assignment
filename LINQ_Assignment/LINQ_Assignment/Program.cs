@@ -7,14 +7,16 @@
         public string Brand { get; set; }
         public int Quantity { get; set; }
         public int Price { get; set; }
+
     }
 
 
     internal class Program
     {
         List<Product> products;
-        public List<Product> seedata()
+        public List<Product> SeedData()
         {
+
             products = new List<Product>()
             {
                 new Product() { ProductID = "P001", ProductName="Laptop",Brand="Dell",Quantity=5, Price=35000 },
@@ -30,40 +32,41 @@
         {
             static void Main(string[] args)
             {
-                //LINQ lINQ = new LINQ();
-                Program lINQ = new Program();
-                lINQ.seedata();
-                Console.WriteLine("Product names from Product List where Price is between 20000 to 40000.");
-                var productNames = lINQ.seedata().Where(p => p.Price >= 20000 && p.Price <= 40000)
-                                  .Select(p => p.ProductName);
-                foreach (var productName in productNames)
+                Program linq = new Program();
+                linq.SeedData();
+
+                var productsBetween20000And40000 = linq.SeedData().Where(p => p.Price >= 20000 && p.Price <= 40000)
+                                                            .Select(p => p.ProductName);
+
+                Console.WriteLine("Product names where Price is between 20000 to 40000:");
+                foreach (var name in productsBetween20000And40000)
                 {
-                    Console.WriteLine(productName);
+                    Console.WriteLine(name);
                 }
-                Console.WriteLine();
 
-                Console.WriteLine("data from Product List where ProductName contains letter a.");
-                var query = lINQ.seedata().Where(x => x.ProductName.Contains("a"));
-                foreach (var data in query)
+                var productsWithLetterA = linq.SeedData().Where(p => p.ProductName.Contains("a"));
+
+                Console.WriteLine("\nProducts where ProductName contains letter a:");
+                foreach (var product in productsWithLetterA)
                 {
-                    Console.WriteLine($"{data.ProductID,-5} {data.ProductName,-10} {data.Brand,-10} {data.Quantity,-5} {data.Price}");
+                    Console.WriteLine($" {product.ProductID} {product.ProductName} {product.Brand} {product.Quantity} {product.Price}");
                 }
-                Console.WriteLine();
 
-                Console.WriteLine("all data from Product List arranged in alphabetical order based on ProductName.");
-                var query1 = lINQ.seedata().OrderBy(x => x.ProductName);
-                foreach (var data in query1)
+                var productsInAlphabeticalOrder = linq.SeedData().OrderBy(p => p.ProductName);
+
+                Console.WriteLine("\nAll products arranged in alphabetical order based on ProductName:");
+                foreach (var product in productsInAlphabeticalOrder)
                 {
-                    Console.WriteLine($"{data.ProductID,-5} {data.ProductName,-10} {data.Brand,-10} {data.Quantity,-5} {data.Price}");
+                    Console.WriteLine($" {product.ProductID} {product.ProductName} {product.Brand} {product.Quantity} {product.Price}");
                 }
-                Console.WriteLine();
 
-                var query2 = lINQ.seedata().Max(x => x.Price);
-                Console.WriteLine("The highest Price from Product List: " + query2);
-                Console.WriteLine();
+                var highestPrice = linq.SeedData().Max(p => p.Price);
 
-                bool query3 = lINQ.seedata().Any(x => x.ProductID == "P003");
-                Console.WriteLine("Product with ProductId P003 exists in Product List is: " + query3);
+                Console.WriteLine("\nHighest Price from Product List: " + highestPrice);
+
+                bool productWithIdP003Exists = linq.SeedData().Any(p => p.ProductID == "P003");
+
+                Console.WriteLine("\nProduct with ProductId P003 exists in Product List: " + productWithIdP003Exists);
             }
         }
     }
